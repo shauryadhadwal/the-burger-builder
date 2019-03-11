@@ -9,19 +9,40 @@ const controls = [
     { label: 'Cheese', type: 'cheese' },
 ];
 
-const buildControls = (props) => (
+const buildControls = (props) => {
 
-    <div className={classes.BuildControls}>
-        <p>Current Price: <strong>{props.totalPrice.toFixed(2)}</strong></p>
-        {controls.map(ctrl => (
-            <BuildControl key={ctrl.label} label={ctrl.label} added={() => props.ingredientAdded(ctrl.type)} removed={() => props.ingredientRemoved(ctrl.type)} disabled={props.disabledInfo[ctrl.type]}/>
-        ))}
-
-        <button
-            className={classes.OrderButton}
-            disabled={!props.purchasable}
-            onClick={props.ordering}>ORDER NOW</button>
-    </div>
-);
+    const controls = Object.keys(props.ingredients)
+        .map(igKey => {
+            return {
+                ['label']: igKey[0].toUpperCase() + igKey.substring(1),
+                ['type']: igKey,
+                ['quantity']: props.ingredients[igKey]
+            }
+        });
+    return (
+        <div className={classes.BuildControlsCard}>
+            <div className={classes.BuildControls}>
+                <h4>Current Price: <strong>{props.totalPrice.toFixed(2)}</strong></h4>
+                {controls.map(ctrl => (
+                    <BuildControl
+                        key={ctrl.label}
+                        label={ctrl.label}
+                        quantity={ctrl.quantity}
+                        added={() => props.ingredientAdded(ctrl.type)}
+                        removed={() => props.ingredientRemoved(ctrl.type)}
+                        disabled={props.disabledInfo[ctrl.type]} />
+                ))}
+                <button type="button"
+                    className="btn btn-primary btn-lg mt-2"
+                    disabled={!props.purchasable}
+                    onClick={props.ordering}>Order Now</button>
+                {/* <button
+                className={classes.OrderButton}
+                disabled={!props.purchasable}
+            onClick={props.ordering}>ORDER NOW</button> */}
+            </div>
+        </div>
+    );
+};
 
 export default buildControls;

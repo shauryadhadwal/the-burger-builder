@@ -1,16 +1,15 @@
 import React from 'react';
-import Auxx from '../../hoc/Auxx';
 import classes from './Layout.css';
-
+import Toolbar from '../Navigation/Toolbar/Toolbar'
 const layout = (props) => (
-    <Auxx>
-        <div>
-            Toolbar
-        </div>
-        <main className={classes.Content}>
-            {props.children}
+    <React.Fragment>
+        <Toolbar />
+        <main className={`container-fluid mx-0 p-0 ${classes.Content}`}>
+            <div className={classes.ContentPaddedContainer}>
+                {props.children}
+            </div>
         </main>
-    </Auxx>
+    </React.Fragment>
 )
 
 export default layout;

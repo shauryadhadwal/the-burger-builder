@@ -1,6 +1,5 @@
 import React from 'react';
 // import classes from './OrderSummary.css'
-import Auxx from '../../../hoc/Auxx';
 import Button from '../../UI/Button/Button';
 
 const orderSummary = (props) => {
@@ -9,7 +8,7 @@ const orderSummary = (props) => {
             return <li key={igKey}> {igKey} : {props.ingredients[igKey]}</li>
         });
     return (
-        <Auxx>
+        <React.Fragment>
             <h3>Your Order</h3>
             <ul>
                 {ingredientSummary}
@@ -18,7 +17,7 @@ const orderSummary = (props) => {
             <p>Continue to checkout ?</p>
             <Button btnType="Danger" clicked={props.purchaseCancelled}>Cancel</Button>
             <Button btnType="Success" clicked={props.purchaseContinued}>Success</Button>
-        </Auxx>
+        </React.Fragment>
     );
 };
 

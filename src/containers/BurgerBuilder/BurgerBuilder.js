@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-import Auxx from '../../hoc/Auxx';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
-import { throws } from 'assert';
-
 
 const INGREDIENT_PRICES = {
     salad: 0.99,
@@ -91,7 +88,7 @@ class BurgerBuilder extends Component {
         }
 
         return (
-            <Auxx>
+            <React.Fragment>
                 <Modal show={this.state.purchasing} closed={this.purchaseCancelHandler}>
                     <OrderSummary ingredients={this.state.ingredients}
                         purchaseCancelled={this.purchaseCancelHandler}
@@ -100,13 +97,14 @@ class BurgerBuilder extends Component {
                 </Modal>
                 <Burger ingredients={this.state.ingredients} />
                 <BuildControls
+                    ingredients={this.state.ingredients}
                     ingredientAdded={this.addIngredientHandler}
                     ingredientRemoved={this.removeIngredientHandler}
                     disabledInfo={disabledInfo}
                     totalPrice={this.state.totalPrice}
                     purchasable={this.state.purchasable}
                     ordering={this.purchaseHandler} />
-            </Auxx>
+            </React.Fragment>
         )
     }
 }

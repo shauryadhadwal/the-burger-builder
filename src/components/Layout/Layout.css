@@ -1,3 +1,32 @@
 .Content{
-    margin-top: 20px;
+    margin-top: 40px;
+    position: absolute;
+    height: Calc(100vh - 56px);
+    height: Calc(100vh - 56px);
+}
+
+.ContentPaddedContainer{
+    margin: auto;
+    width: 50vw;
+}
+
+@media (max-width: 413px){
+    .ContentPaddedContainer{
+        width: 95%;
+    }
+}
+@media (min-width: 414px){
+    .ContentPaddedContainer{
+        width: 90%;
+    }
+}
+@media (min-width: 700px){
+    .ContentPaddedContainer{
+        width: 70%;
+    }
+}
+@media (min-width: 1024px){
+    .ContentPaddedContainer{
+        width: 40%;
+    }
 }

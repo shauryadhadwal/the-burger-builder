@@ -11,18 +11,20 @@ const burger = (props) => {
         });
     }).reduce((arr, cv) => {
         return arr.concat(cv);
-        }, []);
-    
+    }, []);
+
     if (transformedIngredients.length === 0) {
-        transformedIngredients = <p>Start adding your ingredients</p>    
+        transformedIngredients = <p>Start adding your ingredients</p>
     }
 
     return (
-        <div className={classes.Burger}>
-            <BurgerIngredient type="bread-top"/>    
-            {transformedIngredients}
-            <BurgerIngredient type="bread-bottom"/>    
-        </div>
+        <section className={classes.BurgerCard}>
+            <div className={classes.Burger}>
+                <BurgerIngredient type="bread-top" />
+                {transformedIngredients}
+                <BurgerIngredient type="bread-bottom" />
+            </div>
+        </section>
     )
 }
 
