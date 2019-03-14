@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 // import classes from './OrderSummary.css'
-import Button from '../../UI/Button/Button';
 
-const orderSummary = (props) => {
+
+const orderSummary = React.memo((props) => {
+
+    useEffect(() => {
+        // Update the document title using the browser API
+        console.log('[OrderSummary]');
+      });
+
     const ingredientSummary = Object.keys(props.ingredients)
         .map(igKey => {
             return <li key={igKey}> {igKey} : {props.ingredients[igKey]}</li>
@@ -15,10 +21,8 @@ const orderSummary = (props) => {
             </ul>
             <p>Order Total : <strong>{props.totalPrice.toFixed(2)}</strong></p>
             <p>Continue to checkout ?</p>
-            <Button btnType="Danger" clicked={props.purchaseCancelled}>Cancel</Button>
-            <Button btnType="Success" clicked={props.purchaseContinued}>Success</Button>
         </React.Fragment>
     );
-};
+});
 
 export default orderSummary;

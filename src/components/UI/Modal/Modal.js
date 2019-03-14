@@ -1,39 +1,22 @@
 import React from 'react';
-import classes from './Modal.css'
-import Backdrop from '../Backdrop/Backdrop';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
-const modal = (props) => (
-    <React.Fragment>
-        <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div className="modal-dialog" role="document">
-                <div className="modal-content">
-                    <div className="modal-header">
-                        <h5 className="modal-title" id="exampleModalLabel">Modal title</h5>
-                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div className="modal-body">
-                        
-                    </div>
-                    <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" className="btn btn-primary">Save changes</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </React.Fragment>
-    // <React.Fragment>
-    //     <Backdrop show={props.show} closed={props.closed} />
-    //     <div className={classes.Modal}
-    //         style={{
-    //             transform: props.show ? 'translate(0)' : 'translateY(-100vh)',
-    //             opacity: props.show ? 1 : 0
-    //         }}>
-    //         {props.children}
-    //     </div>
-    // </React.Fragment>
-);
+class MainModal extends React.Component {
 
-export default modal;
+    render() {
+        return (
+            <React.Fragment>
+                <Modal show={this.props.show} onHide={this.props.closed}>
+                    <Modal.Body>{this.props.children}</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="success" onClick={this.props.success}>Continue</Button>
+                        <Button variant="danger" onClick={this.props.closed}>Close</Button>
+                    </Modal.Footer>
+                </Modal>
+            </React.Fragment >
+        )
+    }
+}
+
+export default MainModal;

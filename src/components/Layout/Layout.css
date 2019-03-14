@@ -1,11 +1,10 @@
 .Content{
-    margin-top: 40px;
     position: absolute;
-    height: Calc(100vh - 56px);
-    height: Calc(100vh - 56px);
+    padding-top: 80px;
+    height: 100%;
 }
 
-.ContentPaddedContainer{
+/* .ContentPaddedContainer{
     margin: auto;
     width: 50vw;
 }
@@ -29,4 +28,4 @@
     .ContentPaddedContainer{
         width: 40%;
     }
-}
+} */

@@ -2,21 +2,21 @@ import React from 'react';
 import classes from './BuildControls.css';
 import BuildControl from './BuildControl/BuildControl';
 
-const controls = [
-    { label: 'Meat', type: 'meat' },
-    { label: 'Bacon', type: 'bacon' },
-    { label: 'Salad', type: 'salad' },
-    { label: 'Cheese', type: 'cheese' },
-];
+// const controls = [
+//     { label: 'Meat', type: 'meat' },
+//     { label: 'Bacon', type: 'bacon' },
+//     { label: 'Salad', type: 'salad' },
+//     { label: 'Cheese', type: 'cheese' },
+// ];
 
 const buildControls = (props) => {
 
     const controls = Object.keys(props.ingredients)
         .map(igKey => {
             return {
-                ['label']: igKey[0].toUpperCase() + igKey.substring(1),
-                ['type']: igKey,
-                ['quantity']: props.ingredients[igKey]
+                'label': igKey[0].toUpperCase() + igKey.substring(1),
+                'type': igKey,
+                'quantity': props.ingredients[igKey]
             }
         });
     return (
@@ -30,16 +30,13 @@ const buildControls = (props) => {
                         quantity={ctrl.quantity}
                         added={() => props.ingredientAdded(ctrl.type)}
                         removed={() => props.ingredientRemoved(ctrl.type)}
-                        disabled={props.disabledInfo[ctrl.type]} />
+                        disabledMin={props.disabledWhenMinItems[ctrl.type]}
+                        disabledMax={props.disabledWhenMaxItems[ctrl.type]} />
                 ))}
                 <button type="button"
                     className="btn btn-primary btn-lg mt-2"
                     disabled={!props.purchasable}
                     onClick={props.ordering}>Order Now</button>
-                {/* <button
-                className={classes.OrderButton}
-                disabled={!props.purchasable}
-            onClick={props.ordering}>ORDER NOW</button> */}
             </div>
         </div>
     );

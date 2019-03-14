@@ -4,10 +4,8 @@ import Toolbar from '../Navigation/Toolbar/Toolbar'
 const layout = (props) => (
     <React.Fragment>
         <Toolbar />
-        <main className={`container-fluid mx-0 p-0 ${classes.Content}`}>
-            <div className={classes.ContentPaddedContainer}>
+        <main className={`container-fluid ${classes.Content}`}>
                 {props.children}
-            </div>
         </main>
     </React.Fragment>
 )

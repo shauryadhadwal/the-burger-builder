@@ -1,0 +1,36 @@
+.CardsContainer{
+    display: flex;
+    margin: auto;
+}
+
+@media (max-width: 640px){
+    .CardsContainer{
+        display: flex;
+        flex-direction: column;
+        width: 90%;
+    }
+}
+
+@media (min-width: 641px){
+    .CardsContainer{
+        display: flex;
+        flex-direction: column;
+        max-width: 80%;
+    }
+}
+
+@media (min-width: 800px){
+    .CardsContainer{
+        display: flex;
+        flex-direction: column;
+        max-width: 60%;
+    }
+}
+
+@media (min-width: 1008px){
+    .CardsContainer{
+        display: flex;
+        flex-direction: row;
+        max-width: 1140px;
+    }
+}
