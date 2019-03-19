@@ -10,7 +10,7 @@ module.exports = Object.freeze({
     MAX_INGREDIENT: {
         salad: 2,
         bacon: 2,
-        cheese: 2,
+        cheese: 2   ,
         meat: 2
     },
 

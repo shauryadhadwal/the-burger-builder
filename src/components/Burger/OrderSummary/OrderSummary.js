@@ -1,13 +1,6 @@
-import React, { useEffect } from 'react';
-// import classes from './OrderSummary.css'
-
+import React from 'react';
 
 const orderSummary = React.memo((props) => {
-
-    useEffect(() => {
-        // Update the document title using the browser API
-        console.log('[OrderSummary]');
-      });
 
     const ingredientSummary = Object.keys(props.ingredients)
         .map(igKey => {

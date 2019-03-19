@@ -4,7 +4,10 @@ import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import classes from './BurgerBuilder.css';
-import Constants from '../../Constants.js';
+import Constants from '../../Constants';
+import axios from '../../axios-orders';
+import Spinner from '../../components/UI/Spinner/Spinner'
+import withErrorHandler from '../../hoc/WithErrorHandler/WithErrorHandler';
 
 class BurgerBuilder extends Component {
 
@@ -17,14 +20,15 @@ class BurgerBuilder extends Component {
         },
         totalPrice: Constants.BASE_PRICE,
         purchasable: false,
-        purchasing: false
+        purchasing: false,
+        loading: false
     }
 
     // Method to open modal for viewing order summary
     purchaseHandler = () => {
         this.setState({ purchasing: true });
     }
-    
+
     // When an order has been cancelled by the customer
     purchaseCancelHandler = () => {
         this.setState({ purchasing: false });
@@ -32,7 +36,33 @@ class BurgerBuilder extends Component {
 
     // Method to handle 'order placed'. Closes the modal
     purchaseContinueHandler = () => {
-        this.setState({ purchasing: false });
+
+        this.setState({loading: true});
+
+        const order = {
+            ingredients: this.state.ingredients,
+            price: this.state.totalPrice,
+            customer: {
+                address: {
+
+                    name: 'Shaurya Dhadwal',
+                    zipCode: '160101',
+                    country: 'India'
+                },
+                email: 'test@test.com'
+            },
+            deliveryMethod: 'fastest'
+        };
+
+        axios.post('/orders.json', order)
+            .then(res => {
+                this.setState({ loading: false, purchasing: false });
+            })
+            .catch(err => {
+                this.setState({ loading: false, purchasing: false });
+                console.log(err);                
+            });
+
     }
 
     // Method to enable or disable the Order button based on conditionals
@@ -97,15 +127,21 @@ class BurgerBuilder extends Component {
             disabledWhenMaxItems[key] = disabledWhenMaxItems[key] >= Constants.MAX_INGREDIENT[key];
         }
 
+        let orderSummary = <OrderSummary
+            ingredients={this.state.ingredients}
+            totalPrice={this.state.totalPrice} />
+
+        if (this.state.loading) {
+            orderSummary = <Spinner />
+        }
+
         return (
             <React.Fragment>
                 <Modal
                     show={this.state.purchasing}
                     success={this.purchaseContinueHandler}
-                    closed={this.purchaseCancelHandler}>
-                    <OrderSummary
-                        ingredients={this.state.ingredients}
-                        totalPrice={this.state.totalPrice} />
+                    closed={this.purchaseCancelHandler} >
+                    {orderSummary}
                 </Modal>
                 <div className={classes.CardsContainer}>
                     <Burger ingredients={this.state.ingredients} />
@@ -124,4 +160,4 @@ class BurgerBuilder extends Component {
     }
 }
 
-export default BurgerBuilder;
+export default withErrorHandler(BurgerBuilder, axios);
