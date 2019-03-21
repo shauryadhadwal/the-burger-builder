@@ -1,5 +1,6 @@
 import React from 'react';
 import burgerLogo from '../../../assets/images/burger-logo.png'
+import { NavLink } from 'react-router-dom';
 
 const toolbar = (props) => (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -11,14 +12,14 @@ const toolbar = (props) => (
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav nav nav-pills">
-                <li className="nav-item  active">
-                    <a className="nav-link px-1 active" href="/">Home <span className="sr-only">(current)</span></a>
+                <li className="nav-item">
+                    <NavLink className="nav-link px-1" exact to="/">Home</NavLink>
                 </li>
-                <li className="nav-item ">
-                    <a className="nav-link px-1" href="/">Features</a>
+                <li className="nav-item">
+                    <NavLink className="nav-link px-1" to="/orders">Orders</NavLink>
                 </li>
-                <li className="nav-item ">
-                    <a className="nav-link px-1" href="/">Pricing</a>
+                <li className="nav-item">
+                    <NavLink className="nav-link px-1" to="/about">About</NavLink>
                 </li>
             </ul>
         </div>

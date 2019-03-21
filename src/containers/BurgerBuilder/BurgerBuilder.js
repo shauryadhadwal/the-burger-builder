@@ -11,153 +11,149 @@ import withErrorHandler from '../../hoc/WithErrorHandler/WithErrorHandler';
 
 class BurgerBuilder extends Component {
 
-    state = {
-        ingredients: {
-            salad: 0,
-            bacon: 0,
-            cheese: 0,
-            meat: 0
-        },
-        totalPrice: Constants.BASE_PRICE,
-        purchasable: false,
-        purchasing: false,
-        loading: false
-    }
+	state = {
+		ingredients: null,
+		totalPrice: Constants.BASE_PRICE,
+		purchasable: false,
+		purchasing: false,
+		loading: false
+	}
 
-    // Method to open modal for viewing order summary
-    purchaseHandler = () => {
-        this.setState({ purchasing: true });
-    }
+	componentDidMount() {
+		axios.get('/ingredients.json')
+			.then(res => {
+				this.setState({ ingredients: res.data })
+			})
+			.catch(err => {
+				console.log(err)
+			});
+	}
 
-    // When an order has been cancelled by the customer
-    purchaseCancelHandler = () => {
-        this.setState({ purchasing: false });
-    }
+	// Method to open modal for viewing order summary
+	purchaseHandler = () => {
+		this.setState({ purchasing: true });
+	}
 
-    // Method to handle 'order placed'. Closes the modal
-    purchaseContinueHandler = () => {
+	// When an order has been cancelled by the customer
+	purchaseCancelHandler = () => {
+		this.setState({ purchasing: false });
+	}
 
-        this.setState({loading: true});
+	// Method to handle 'order placed'. Closes the modal
+	purchaseContinueHandler = () => {
 
-        const order = {
-            ingredients: this.state.ingredients,
-            price: this.state.totalPrice,
-            customer: {
-                address: {
+		const queryParams = [];
+		for (let itr in this.state.ingredients) {
+			queryParams.push(encodeURIComponent(itr) + '=' + this.state.ingredients[itr]);
+		}
+		const queryString = queryParams.join('&');
+		this.props.history.push({
+			pathname: '/checkout',
+			search: queryString
+		});
+	}
 
-                    name: 'Shaurya Dhadwal',
-                    zipCode: '160101',
-                    country: 'India'
-                },
-                email: 'test@test.com'
-            },
-            deliveryMethod: 'fastest'
-        };
+	// Method to enable or disable the Order button based on conditionals
+	updatePurchaseState = (updatedPrice) => {
+		this.setState({ purchasable: updatedPrice > Constants.BASE_PRICE });
+	}
 
-        axios.post('/orders.json', order)
-            .then(res => {
-                this.setState({ loading: false, purchasing: false });
-            })
-            .catch(err => {
-                this.setState({ loading: false, purchasing: false });
-                console.log(err);                
-            });
+	// Method to ensure only two decimal places are stored
+	convertTo2DecimalPlaces = (num) => {
+		return parseFloat(num.toFixed(2))
+	}
 
-    }
+	// Method to add elements between burger buns
+	addIngredientHandler = (type) => {
+		const updatedCount = this.state.ingredients[type] + 1;
+		const updatedIngredients = { ...this.state.ingredients };
+		updatedIngredients[type] = updatedCount;
 
-    // Method to enable or disable the Order button based on conditionals
-    updatePurchaseState = (updatedPrice) => {
-        this.setState({ purchasable: updatedPrice > Constants.BASE_PRICE });
-    }
+		const updatedPrice = this.convertTo2DecimalPlaces(this.state.totalPrice + Constants.INGREDIENT_PRICES[type]);
 
-    // Method to ensure only two decimal places are stored
-    convertTo2DecimalPlaces = (num) => {
-        return parseFloat(num.toFixed(2))
-    }
+		this.updatePurchaseState(updatedPrice);
 
-    // Method to add elements between burger buns
-    addIngredientHandler = (type) => {
-        const updatedCount = this.state.ingredients[type] + 1;
-        const updatedIngredients = { ...this.state.ingredients };
-        updatedIngredients[type] = updatedCount;
+		this.setState({
+			totalPrice: updatedPrice,
+			ingredients: updatedIngredients
+		});
+	}
 
-        const updatedPrice = this.convertTo2DecimalPlaces(this.state.totalPrice + Constants.INGREDIENT_PRICES[type]);
+	// Method to remove elements from between burger buns
+	removeIngredientHandler = (type) => {
+		if (this.state.ingredients[type] === 0)
+			return;
 
-        this.updatePurchaseState(updatedPrice);
+		const updatedCount = this.state.ingredients[type] - 1;
+		const updatedIngredients = { ...this.state.ingredients };
+		updatedIngredients[type] = updatedCount;
 
-        this.setState({
-            totalPrice: updatedPrice,
-            ingredients: updatedIngredients
-        });
-    }
+		const updatedPrice = this.convertTo2DecimalPlaces(this.state.totalPrice - Constants.INGREDIENT_PRICES[type]);
 
-    // Method to remove elements from between burger buns
-    removeIngredientHandler = (type) => {
-        if (this.state.ingredients[type] === 0)
-            return;
+		this.updatePurchaseState(updatedPrice);
 
-        const updatedCount = this.state.ingredients[type] - 1;
-        const updatedIngredients = { ...this.state.ingredients };
-        updatedIngredients[type] = updatedCount;
+		this.setState({
+			totalPrice: updatedPrice,
+			ingredients: updatedIngredients
+		});
+	}
 
-        const updatedPrice = this.convertTo2DecimalPlaces(this.state.totalPrice - Constants.INGREDIENT_PRICES[type]);
+	render() {
 
-        this.updatePurchaseState(updatedPrice);
+		// Disable button for removing ingredients if none are there.
+		const disabledWhenMinItems = {
+			...this.state.ingredients
+		}
+		for (let key in disabledWhenMinItems) {
+			disabledWhenMinItems[key] = disabledWhenMinItems[key] <= 0;
+		}
+		// Disable button for adding more ingredients if max have been added
+		const disabledWhenMaxItems = {
+			...this.state.ingredients
+		}
+		for (let key in disabledWhenMaxItems) {
+			disabledWhenMaxItems[key] = disabledWhenMaxItems[key] >= Constants.MAX_INGREDIENT[key];
+		}
 
-        this.setState({
-            totalPrice: updatedPrice,
-            ingredients: updatedIngredients
-        });
-    }
+		let orderSummary = <OrderSummary
+			ingredients={this.state.ingredients}
+			totalPrice={this.state.totalPrice} />
 
-    render() {
+		if (this.state.loading) {
+			orderSummary = <Spinner />
+		}
 
-        // Disable button for removing ingredients if none are there.
-        const disabledWhenMinItems = {
-            ...this.state.ingredients
-        }
-        for (let key in disabledWhenMinItems) {
-            disabledWhenMinItems[key] = disabledWhenMinItems[key] <= 0;
-        }
-        // Disable button for adding more ingredients if max have been added
-        const disabledWhenMaxItems = {
-            ...this.state.ingredients
-        }
-        for (let key in disabledWhenMaxItems) {
-            disabledWhenMaxItems[key] = disabledWhenMaxItems[key] >= Constants.MAX_INGREDIENT[key];
-        }
+		let burger = <Spinner />
 
-        let orderSummary = <OrderSummary
-            ingredients={this.state.ingredients}
-            totalPrice={this.state.totalPrice} />
+		if (this.state.ingredients) {
+			burger = <React.Fragment>
+				<Burger ingredients={this.state.ingredients} />
+				<BuildControls
+					ingredients={this.state.ingredients}
+					ingredientAdded={this.addIngredientHandler}
+					ingredientRemoved={this.removeIngredientHandler}
+					disabledWhenMinItems={disabledWhenMinItems}
+					disabledWhenMaxItems={disabledWhenMaxItems}
+					totalPrice={this.state.totalPrice}
+					purchasable={this.state.purchasable}
+					ordering={this.purchaseHandler} />
+			</React.Fragment>
+		}
 
-        if (this.state.loading) {
-            orderSummary = <Spinner />
-        }
-
-        return (
-            <React.Fragment>
-                <Modal
-                    show={this.state.purchasing}
-                    success={this.purchaseContinueHandler}
-                    closed={this.purchaseCancelHandler} >
-                    {orderSummary}
-                </Modal>
-                <div className={classes.CardsContainer}>
-                    <Burger ingredients={this.state.ingredients} />
-                    <BuildControls
-                        ingredients={this.state.ingredients}
-                        ingredientAdded={this.addIngredientHandler}
-                        ingredientRemoved={this.removeIngredientHandler}
-                        disabledWhenMinItems={disabledWhenMinItems}
-                        disabledWhenMaxItems={disabledWhenMaxItems}
-                        totalPrice={this.state.totalPrice}
-                        purchasable={this.state.purchasable}
-                        ordering={this.purchaseHandler} />
-                </div>
-            </React.Fragment>
-        )
-    }
+		return (
+			<React.Fragment>
+				<Modal
+					show={this.state.purchasing}
+					success={this.purchaseContinueHandler}
+					closed={this.purchaseCancelHandler} >
+					{orderSummary}
+				</Modal>
+				<div className={classes.CardsContainer}>
+					{burger}
+				</div>
+			</React.Fragment>
+		)
+	}
 }
 
 export default withErrorHandler(BurgerBuilder, axios);

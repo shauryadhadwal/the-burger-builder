@@ -1,0 +1,15 @@
+.OrderCard{
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 5px 5px rgb(180, 180, 180);
+    width: 100%;
+    margin:10px 0;
+    padding: 20px 30px;
+}
+
+.IngredientBorder{
+   padding: 3px;
+       line-height: 3;
+    margin: 10px 5px;
+    border: 1px solid  rgb(180, 180, 180);
+}

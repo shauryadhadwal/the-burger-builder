@@ -91,7 +91,7 @@
 
 .Cheese {
     width: 90%;
-    height: 1vh;
+    height: 1.5vh;
     margin: 3px auto;
     background: linear-gradient(#f4d004, #d6bb22);
     border-radius: 20px;
@@ -99,7 +99,7 @@
 
 .Salad {
     width: 85%;
-    height: 1vh;
+    height: 2vh;
     margin: 3px auto;
     background: linear-gradient(#228c1d, #91ce50);
     border-radius: 20px;
@@ -113,22 +113,38 @@
 }
 
 @media (max-width: 413px){
-  .BreadTop {
+   .BreadTop {
     height: 5vh;
   }
+  .BreadBottom {
+    height: 3vh;
+  }
+  .Cheese{height: 1vh;}
+  .Salad{height: 1vh;}
+  .Meat{height: 1.5vh;}
+  .Bacon{height: 1vh;}
 }
 @media (min-width: 414px){
   .BreadTop {
+    height: 7vh;
+  }
+  .BreadBottom {
     height: 5vh;
   }
 }
 @media (min-width: 700px){
   .BreadTop {
-    height: 5vh;
+    height: 10vh;
+  }
+  .BreadBottom {
+    height: 6vh;
   }
 }
 @media (min-width: 1024px){
   .BreadTop {
-    height: 5vh;
+    height: 10vh;
+  }
+  .BreadBottom {
+    height: 6vh;
   }
 }

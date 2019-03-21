@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 const orderSummary = React.memo((props) => {
+
+    // useEffect(()=>{console.log('[OrderSummary]')});
 
     const ingredientSummary = Object.keys(props.ingredients)
         .map(igKey => {
