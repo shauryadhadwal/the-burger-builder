@@ -5,6 +5,7 @@ import axios from '../../../axios-orders';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { connect } from 'react-redux';
 
 class ContactData extends Component {
 	state = {
@@ -21,17 +22,9 @@ class ContactData extends Component {
 		this.setState({ loading: true });
 
 		const order = {
-			ingredients: this.props.ingredients,
-			price: 30,
-			customer: {
-				address: {
-					name: values.name,
-					zipCode: values.postalCode,
-					country: 'India'
-				},
-				email: values.email
-			},
-			deliveryMethod: values.delivery
+			ingredients: this.props.ingr,
+			price: this.props.price,
+			orderData: values
 		};
 
 		axios.post('/orders.json', order)
@@ -178,4 +171,11 @@ class ContactData extends Component {
 	}
 }
 
-export default ContactData;
+const mapStateToProps = state => {
+	return {
+		ingr: state.ingredients,
+		price: state.totalPrice
+	};
+}
+
+export default connect(mapStateToProps)(ContactData);

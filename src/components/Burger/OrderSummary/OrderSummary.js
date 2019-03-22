@@ -14,7 +14,7 @@ const orderSummary = React.memo((props) => {
             <ul>
                 {ingredientSummary}
             </ul>
-            <p>Order Total : <strong>{props.totalPrice.toFixed(2)}</strong></p>
+            <p>Order Total : <strong>INR {props.totalPrice.toFixed(2)}</strong></p>
             <p>Continue to checkout ?</p>
         </React.Fragment>
     );
