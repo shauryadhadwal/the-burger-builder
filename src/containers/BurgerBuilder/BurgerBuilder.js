@@ -9,7 +9,7 @@ import axios from '../../axios-orders';
 import Spinner from '../../components/UI/Spinner/Spinner'
 import withErrorHandler from '../../hoc/WithErrorHandler/WithErrorHandler';
 import { connect } from 'react-redux';
-import * as burgerBuilderActions from '../../store/actions/index';
+import * as actions from '../../store/actions/index';
 
 class BurgerBuilder extends Component {
 
@@ -20,7 +20,9 @@ class BurgerBuilder extends Component {
 	}
 
 	componentDidMount() {
-		this.props.onInitIngredients()
+		this.props.onInitIngredients();
+		this.props.onPurchaseInit();
+
 	}
 
 	// Method to open modal for viewing order summary
@@ -110,18 +112,18 @@ class BurgerBuilder extends Component {
 
 const mapStateToProps = state => {
 	return {
-		ingr: state.ingredients,
-		price: state.totalPrice,
-		error: state.error
+		ingr: state.burgerBuilder.ingredients,
+		price: state.burgerBuilder.totalPrice,
+		error: state.burgerBuilder.error
 	};
 }
 
 const mapDispatchToProps = dispatch => {
 	return {
-		onIngredientAdded: (ingrName) => dispatch(burgerBuilderActions.addIngredient(ingrName)),
-		onIngredientRemoved: (ingrName) => dispatch(burgerBuilderActions.removeIngredient(ingrName)),
-		onInitIngredients: () => dispatch(burgerBuilderActions.initIngredients())
-	
+		onIngredientAdded: (ingrName) => dispatch(actions.addIngredient(ingrName)),
+		onIngredientRemoved: (ingrName) => dispatch(actions.removeIngredient(ingrName)),
+		onInitIngredients: () => dispatch(actions.initIngredients()),
+		onPurchaseInit: () => dispatch(actions.purchaseInit())
 	}
 }
 

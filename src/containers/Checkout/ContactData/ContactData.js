@@ -6,6 +6,8 @@ import Spinner from '../../../components/UI/Spinner/Spinner';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { connect } from 'react-redux';
+import withErrorHandler from '../../../hoc/WithErrorHandler/WithErrorHandler';
+import * as actions from '../../../store/actions/index';
 
 class ContactData extends Component {
 	state = {
@@ -19,7 +21,6 @@ class ContactData extends Component {
 	}
 
 	orderHandler = (values) => {
-		this.setState({ loading: true });
 
 		const order = {
 			ingredients: this.props.ingr,
@@ -27,15 +28,7 @@ class ContactData extends Component {
 			orderData: values
 		};
 
-		axios.post('/orders.json', order)
-			.then(res => {
-				this.setState({ loading: false });
-				this.props.history.push('/');
-			})
-			.catch(err => {
-				this.setState({ loading: false });
-				console.log(err);
-			});
+		this.props.onOrderBurger(order);
 	}
 
 	render() {
@@ -160,7 +153,7 @@ class ContactData extends Component {
 			</Formik>
 		</div>
 
-		if (this.state.loading) {
+		if (this.props.loading) {
 			form = <Spinner />
 		}
 		return (
@@ -173,9 +166,16 @@ class ContactData extends Component {
 
 const mapStateToProps = state => {
 	return {
-		ingr: state.ingredients,
-		price: state.totalPrice
+		ingr: state.burgerBuilder.ingredients,
+		price: state.burgerBuilder.totalPrice,
+		loading: state.order.loading
 	};
 }
 
-export default connect(mapStateToProps)(ContactData);
+const mapDispatchToProps = dispatch => {
+	return {
+		onOrderBurger: (order) => dispatch(actions.purchaseBurger(order))
+	};
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ContactData, axios));
