@@ -1,6 +1,5 @@
-import React, { Component, Fragment } from 'react';
+import React from 'react';
 import Burger from '../../Burger/Burger';
-import classes from './CheckoutSummary.css';
 import Button from 'react-bootstrap/Button';
 
 const checkout = (props) => {

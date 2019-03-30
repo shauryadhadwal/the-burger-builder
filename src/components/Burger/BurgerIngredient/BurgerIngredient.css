@@ -1,5 +1,5 @@
 .BreadTop {
-    height: 5vh;
+    height: 44px;
     width: 80%;
     background: linear-gradient(#bc581e, #e27b36);
     border-radius: 50% 50% 0 0;
@@ -9,7 +9,7 @@
 }
 
 .BreadBottom {
-    height: 4vh;
+    height: 26px;
     width: 80%;
     background: linear-gradient(#F08E4A, #e27b36);
     border-radius: 0 0 30px 30px;
@@ -40,8 +40,8 @@
     border-radius: 40%;
     transform: rotate(60deg);
     box-shadow: inset -1px 2px #c9c9c9;
-  }
-  
+}
+
 .Seeds1:before {
     content: "";
     width: 100%;
@@ -53,9 +53,9 @@
     border-radius: 40%;
     transform: rotate(60deg);
     box-shadow: inset -1px -3px #c9c9c9;
-  }
+}
 
-  .Seeds2 {
+.Seeds2 {
     width: 10%;
     height: 15%;
     position: absolute;
@@ -65,9 +65,9 @@
     border-radius: 40%;
     transform: rotate(10deg);
     box-shadow: inset -3px 0 #c9c9c9;
-  }
-  
-  .Seeds2:before {
+}
+
+.Seeds2:before {
     content: "";
     width: 100%;
     height: 100%;
@@ -78,12 +78,11 @@
     border-radius: 40%;
     transform: rotate(90deg);
     box-shadow: inset 1px 3px #c9c9c9;
-  }
-  
+}
 
 .Meat {
     width: 80%;
-    height: 3vh;
+    height: 14px;
     background: linear-gradient(#7f3608, #702e05);
     margin: 3px auto;
     border-radius: 15px;
@@ -91,7 +90,7 @@
 
 .Cheese {
     width: 90%;
-    height: 1.5vh;
+    height: 9px;
     margin: 3px auto;
     background: linear-gradient(#f4d004, #d6bb22);
     border-radius: 20px;
@@ -99,7 +98,7 @@
 
 .Salad {
     width: 85%;
-    height: 2vh;
+    height: 9px;
     margin: 3px auto;
     background: linear-gradient(#228c1d, #91ce50);
     border-radius: 20px;
@@ -107,44 +106,37 @@
 
 .Bacon {
     width: 80%;
-    height: 1.5vh;
+    height: 9px;
     background: linear-gradient(#bf3813, #c45e38);
     margin: 3px auto;
 }
 
-@media (max-width: 413px){
-   .BreadTop {
-    height: 5vh;
-  }
-  .BreadBottom {
-    height: 3vh;
-  }
-  .Cheese{height: 1vh;}
-  .Salad{height: 1vh;}
-  .Meat{height: 1.5vh;}
-  .Bacon{height: 1vh;}
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+    .BreadTop {
+        height: 53px;
+    }
+
+    .BreadBottom {
+        height: 35px;
+    }
+
+    .Meat {
+        height: 15px;
+    }
+
+    .Salad {
+        height: 9px;
+    }
+
+    .Bacon {
+        height: 9px;
+    }
+
+    .Cheese {
+        height: 9px;
+    }
 }
-@media (min-width: 414px){
-  .BreadTop {
-    height: 7vh;
-  }
-  .BreadBottom {
-    height: 5vh;
-  }
-}
-@media (min-width: 700px){
-  .BreadTop {
-    height: 10vh;
-  }
-  .BreadBottom {
-    height: 6vh;
-  }
-}
-@media (min-width: 1024px){
-  .BreadTop {
-    height: 10vh;
-  }
-  .BreadBottom {
-    height: 6vh;
-  }
-}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {}

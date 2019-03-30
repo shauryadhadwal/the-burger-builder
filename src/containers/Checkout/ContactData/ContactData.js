@@ -60,7 +60,6 @@ class ContactData extends Component {
 						handleBlur,
 						handleSubmit,
 						handleReset,
-						isValid
 					} = props;
 					return (
 						<Form noValidate onSubmit={handleSubmit}>

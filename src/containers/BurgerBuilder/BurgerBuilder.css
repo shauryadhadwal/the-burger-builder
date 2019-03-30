@@ -1,32 +1,5 @@
 .CardsContainer{
     display: flex;
     margin: auto;
-}
-
-@media (max-width: 640px){
-    .CardsContainer{
-        flex-direction: column;
-        width: 90%; 
-    }
-}
-
-@media (min-width: 641px){
-    .CardsContainer{
-        flex-direction: column;
-        max-width: 80%;
-    }
-}
-
-@media (min-width: 800px){
-    .CardsContainer{
-        flex-direction: column;
-        max-width: 60%;
-    }
-}
-
-@media (min-width: 1008px){
-    .CardsContainer{
-        flex-direction: row;
-        max-width: 1140px;
-    }
+    flex-direction: column;
 }
