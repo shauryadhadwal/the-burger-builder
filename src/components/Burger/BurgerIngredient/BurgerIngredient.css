@@ -139,4 +139,28 @@
 }
 
 /* Medium devices (tablets, 768px and up) */
-@media (min-width: 768px) {}
+@media (min-width: 768px) {
+     .BreadTop {
+        height: calc(53px * 1.4);
+    }
+
+    .BreadBottom {
+        height: calc(35px * 1.4);
+    }
+
+    .Meat {
+        height: calc(15px * 1.4);
+    }
+
+    .Salad {
+        height: calc(9px * 1.4);
+    }
+
+    .Bacon {
+        height: calc(9px * 1.4);
+    }
+
+    .Cheese {
+        height: calc(9px * 1.4);
+    }
+}

@@ -2,15 +2,18 @@ import React from 'react';
 import Burger from '../../Burger/Burger';
 import Button from 'react-bootstrap/Button';
 
+import classes from './CheckoutSummary.css';
+
 const checkout = (props) => {
 	return (
-			<div>
-				<Burger ingredients={props.ingredients} />
-				<Button variant='primary' style={{width:'100%'}} onClick={props.checkoutContinued}>Looks Good</Button>
-				<br />
-				<Button variant='secondary' style={{width:'100%'}} onClick={props.checkoutCancelled}>Something is missing!</Button>
-				<br />
+		<div>
+			<Burger ingredients={props.ingredients} />
+			<div className={classes.ActionsContainer}>
+				<Button variant='primary' block onClick={props.checkoutContinued}>Looks Good</Button>
+				<div readOnly></div>
+				<Button variant='secondary' block onClick={props.checkoutCancelled}>Something is missing!</Button>
 			</div>
+		</div>
 	);
 }
 

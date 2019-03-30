@@ -2,33 +2,5 @@
     display: flex;
     margin: auto;
     flex-direction: column;
-    /* justify-content: space-around; */
-}
-
-@media (max-width: 640px){
-    .CardsContainer{
-        flex-direction: column;
-        width: 90%; 
-    }
-}
-
-@media (min-width: 641px){
-    .CardsContainer{
-        flex-direction: column;
-        max-width: 60%;
-    }
-}
-
-@media (min-width: 800px){
-    .CardsContainer{
-        flex-direction: column;
-        max-width: 50%;
-    }
-}
-
-@media (min-width: 1008px){
-    .CardsContainer{
-        flex-direction: row;
-        max-width: 1000px;
-    }
+    padding-bottom: 50px;
 }

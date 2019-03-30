@@ -1,0 +1,11 @@
+.ActionsContainer {
+    width: 100%;
+    max-width: 500px;
+    min-width: 300px;
+    margin: auto;
+    box-sizing: border-box;
+    padding-bottom: 10px;
+    display: grid;
+    grid-template-columns: 1fr 10px 1fr;
+    grid-template-rows: 1fr; 
+}
