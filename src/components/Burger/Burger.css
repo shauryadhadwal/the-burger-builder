@@ -11,14 +11,13 @@
 .Burger {
     width: 100%;
     margin: auto;
-    min-height: 400px;
     text-align: center;
     font-weight: bold;
     font-size: 1.2rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    min-height: 250px;
+    min-height: 280px;
     width: 300px;
     padding: 20px 0;
 }

@@ -13,11 +13,12 @@ class Auth extends Component {
         isSignup: true
     }
 
-    onSubmit(email, passowrd) {
+    onSubmit(email, password, ) {
 
+        this.props.onAuth(email, password);
     }
 
-    switchAuthMethod = () => {
+    switchAuthMethod(){
         this.setState({ isSignup: !this.state.isSignup });
     }
 
@@ -31,7 +32,7 @@ class Auth extends Component {
                 handleChange,
                 handleBlur,
                 handleSubmit,
-                handleReset,
+                handleReset
             } = props;
             return (
                 <Form noValidate onSubmit={handleSubmit}>
@@ -64,10 +65,23 @@ class Auth extends Component {
 
                     <Button
                         variant="secondary"
-                        type="button"
-                        onClick={handleReset} >
+                        block
+                        type="submit"
+                        onClick={handleSubmit} >
                         {this.state.isSignup ? 'Signup' : 'Login'}
                     </Button>
+                    <hr />
+                    {
+                        this.state.isSignup ? (
+                            <Fragment>
+                                Are you already registered? <span><Button size="sm" variant="warning" onClick={()=>{this.switchAuthMethod(); handleReset()}}>Login</Button></span> instead!
+                    </Fragment>
+                        ) : (
+                                <Fragment>
+                                    Don't have an account ? <span><Button size="sm" variant="warning" onClick={()=>{this.switchAuthMethod(); handleReset()}}>Register</Button></span> here first!
+                        </Fragment>
+                            )
+                    }
                 </Form>
             )
         }
@@ -86,19 +100,6 @@ class Auth extends Component {
                 })}
                 component={formikComponent}
             />
-            <hr />
-            <div>{
-                this.state.isSignup ? (
-                    <Fragment>
-                        Are you already registered? <span><Button size="sm" variant="warning" onClick={this.switchAuthMethod}>Login</Button></span> instead!
-                    </Fragment>
-                ) : (
-                        <Fragment>
-                            Don't have an account ? <span><Button size="sm" variant="warning" onClick={this.switchAuthMethod}>Register</Button></span> here first!
-                        </Fragment>
-                    )
-            }
-            </div>
         </div>
 
         if (this.props.loading) {
