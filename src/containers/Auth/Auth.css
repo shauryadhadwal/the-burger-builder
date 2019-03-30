@@ -1,0 +1,13 @@
+.AuthFormCard {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 5px 5px rgb(180, 180, 180);
+    width: 100%;
+    padding: 20px 30px;
+    margin: 10px auto;
+    max-width: 500px;
+}
+
+.AuthFormCard h4{
+    text-align: center;
+}
