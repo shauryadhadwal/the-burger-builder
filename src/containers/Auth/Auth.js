@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Form, Button } from 'react-bootstrap';
+import { Redirect } from 'react-router-dom';
 import classes from './Auth.css';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import { Formik } from 'formik';
@@ -13,12 +14,12 @@ class Auth extends Component {
         isSignup: true
     }
 
-    onSubmit(email, password, ) {
+    onSubmit(email, password, isSignup ) {
 
-        this.props.onAuth(email, password);
+        this.props.onAuth(email, password, isSignup);
     }
 
-    switchAuthMethod(){
+    switchAuthMethod() {
         this.setState({ isSignup: !this.state.isSignup });
     }
 
@@ -56,10 +57,8 @@ class Auth extends Component {
                             value={values.password}
                             onChange={handleChange}
                             onBlur={handleBlur}
-                            isValid={touched.password && !errors.password}
                             isInvalid={touched.password && !!errors.password}
                         />
-                        <Form.Control.Feedback >Looks Good!</Form.Control.Feedback>
                         <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
                     </Form.Group>
 
@@ -74,11 +73,11 @@ class Auth extends Component {
                     {
                         this.state.isSignup ? (
                             <Fragment>
-                                Are you already registered? <span><Button size="sm" variant="warning" onClick={()=>{this.switchAuthMethod(); handleReset()}}>Login</Button></span> instead!
+                                Are you already registered? <span><Button size="sm" variant="warning" onClick={() => { this.switchAuthMethod(); handleReset() }}>Login</Button></span> instead!
                     </Fragment>
                         ) : (
                                 <Fragment>
-                                    Don't have an account ? <span><Button size="sm" variant="warning" onClick={()=>{this.switchAuthMethod(); handleReset()}}>Register</Button></span> here first!
+                                    Don't have an account ? <span><Button size="sm" variant="warning" onClick={() => { this.switchAuthMethod(); handleReset() }}>Register</Button></span> here first!
                         </Fragment>
                             )
                     }
@@ -106,14 +105,23 @@ class Auth extends Component {
             form = <Spinner />
         }
 
+        let authRedirect = null;
+        if (this.props.isAuthenticated) {
+            authRedirect = <Redirect to={this.props.authRedirectPath} />
+        }
+
         return (
-            <div className={classes.AuthFormCard}>
-                <h4>{this.state.isSignup ? 'Signup Page' : 'Login Page'}</h4>
-                {form}
-            </div>
+            <Fragment>
+                {authRedirect}
+                <div className={classes.AuthFormCard}>
+                    <h4>{this.state.isSignup ? 'Signup Page' : 'Login Page'}</h4>
+                    {form}
+                </div>
+            </Fragment>
         )
     }
 }
+
 const mapStateToProps = state => {
     return {
         loading: state.auth.loading,

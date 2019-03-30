@@ -1,13 +1,25 @@
-import React from 'react';
+import React, { Component } from 'react';
 import classes from './Layout.css';
 import Toolbar from '../../components/Navigation/Toolbar/Toolbar'
-const layout = (props) => (
-    <React.Fragment>
-        <Toolbar />
-        <main className={`container-fluid ${classes.Content}`}>
-                {props.children}
-        </main>
-    </React.Fragment>
-)
+import { connect } from 'react-redux';
 
-export default layout;
+class Layout extends Component {
+    render() {
+        return (
+            <React.Fragment>
+                <Toolbar isAuthenticated={this.props.isAuthenticated}/>
+                <main className={`container-fluid ${classes.Content}`}>
+                    {this.props.children}
+                </main>
+            </React.Fragment>
+        );
+    }
+}
+
+const mapStateToProps = state => {
+    return{
+        isAuthenticated: state.auth.token !== null
+    }
+}
+
+export default connect(mapStateToProps)(Layout);
