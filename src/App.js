@@ -10,6 +10,16 @@ import Logout from './containers/Auth/Logout/Logout';
 import { connect } from 'react-redux';
 import * as actions from './store/actions/index';
 
+const ProtectedRoute = (props) => {
+    const { path, component } = props;
+    if (props.isAuth) {
+        return <Route path={path} component={component} />
+    }
+    else {
+        return <Route render={() => <Redirect to="/auth" />} />
+    }
+}
+
 class App extends Component {
 
     componentDidMount() {
@@ -21,17 +31,23 @@ class App extends Component {
             <React.Fragment>
                 <Layout>
                     <Switch>
-                        <Route path="/orders" component={Orders} />
-                        <Route path="/checkout" component={Checkout} />
                         <Route path="/home" component={BurgerBuilder} />
                         <Route path="/auth" component={Auth} />
                         <Route path="/about" component={About} />
-                        <Route path="/logout" component={Logout} />
+                        <ProtectedRoute path="/orders" component={Orders} isAuth={this.props.isAuth} />
+                        <ProtectedRoute path="/checkout" component={Checkout} isAuth={this.props.isAuth} />
+                        <ProtectedRoute path="/logout" component={Logout} isAuth={this.props.isAuth} />
                         <Redirect from="/" to="/home" />
                     </Switch>
                 </Layout>
             </React.Fragment>
         );
+    }
+}
+
+const mapStateToProps = state => {
+    return {
+        isAuth: state.auth.token !== null
     }
 }
 
@@ -41,4 +57,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
