@@ -34,7 +34,6 @@ class Auth extends Component {
                 handleReset,
                 isValid
             } = props;
-            console.log(values.email.length);
 
             return (
                 <Form noValidate onSubmit={handleSubmit}>
@@ -63,7 +62,7 @@ class Auth extends Component {
                         <Form.Label>password</Form.Label>
                         <Form.Control
                             placeholder="Enter your Password"
-                            type="text"
+                            type="password"
                             value={values.password}
                             onChange={handleChange}
                             onBlur={handleBlur}
