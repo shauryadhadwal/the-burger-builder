@@ -11,12 +11,11 @@ import * as actions from '../../store/actions/index';
 class Auth extends Component {
 
     state = {
-        isSignup: true
+        isSignup: false
     }
 
-    onSubmit(email, password, isSignup ) {
-
-        this.props.onAuth(email, password, isSignup);
+    onSubmit(email, password) {
+        this.props.onAuth(email, password, this.state.isSignup);
     }
 
     switchAuthMethod() {
@@ -24,7 +23,6 @@ class Auth extends Component {
     }
 
     render() {
-
         const formikComponent = (props) => {
             const {
                 values,
@@ -33,8 +31,11 @@ class Auth extends Component {
                 handleChange,
                 handleBlur,
                 handleSubmit,
-                handleReset
+                handleReset,
+                isValid
             } = props;
+            console.log(values.email.length);
+
             return (
                 <Form noValidate onSubmit={handleSubmit}>
                     <Form.Group htmlFor="email" controlId="email">
@@ -45,9 +46,18 @@ class Auth extends Component {
                             value={values.email}
                             onChange={handleChange}
                             onBlur={handleBlur}
-                            isInvalid={touched.email && !!errors.email}
+                            isInvalid={(this.props.error && this.props.error.field === 'email') || (touched.email && errors.email)
+                            }
                         />
                         <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
+                        <Form.Control.Feedback type="invalid">
+                            {
+                                this.props.error
+                                && this.props.error.field === 'email'
+                                && values.email.length === 0
+                                && this.props.error.message
+                            }
+                        </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group htmlFor="password" controlId="password">
                         <Form.Label>password</Form.Label>
@@ -57,13 +67,26 @@ class Auth extends Component {
                             value={values.password}
                             onChange={handleChange}
                             onBlur={handleBlur}
-                            isInvalid={touched.password && !!errors.password}
+                            isInvalid={(this.props.error && this.props.error.field === 'password') || (touched.email && errors.email)
+                            }
                         />
                         <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+                        <Form.Control.Feedback type="invalid">
+                            {
+                                this.props.error
+                                && this.props.error.field === 'password'
+                                && values.password.length === 0
+                                && this.props.error.message
+                            }
+                        </Form.Control.Feedback>
                     </Form.Group>
-
+                    <p className={classes.OtherErrors}>
+                        {this.props.error
+                            && this.props.error.field === 'other'
+                            && this.props.error.message}
+                    </p>
                     <Button
-                        variant="secondary"
+                        variant="primary"
                         block
                         type="submit"
                         onClick={handleSubmit} >
