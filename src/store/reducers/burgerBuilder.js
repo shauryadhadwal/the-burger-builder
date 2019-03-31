@@ -4,7 +4,8 @@ import constants from '../../Constants';
 const initialState = {
     ingredients: null,
     totalPrice: constants.BASE_PRICE,
-    error: false
+    error: false,
+    building: false
 }
 
 const convertToBaseTwo = (num) => {
@@ -20,7 +21,9 @@ const reducer = (state = initialState, action) => {
                     ...state.ingredients,
                     [action.ingredientName]: state.ingredients[action.ingredientName] + 1,
                 },
-                totalPrice: convertToBaseTwo(state.totalPrice + constants.INGREDIENT_PRICES[action.ingredientName])
+                totalPrice: convertToBaseTwo(state.totalPrice + constants.INGREDIENT_PRICES[action.ingredientName]),
+                building: true
+
             }
         case actionTypes.REMOVE_INGREDIENT:
             return {
@@ -29,14 +32,17 @@ const reducer = (state = initialState, action) => {
                     ...state.ingredients,
                     [action.ingredientName]: state.ingredients[action.ingredientName] - 1
                 },
-                totalPrice: convertToBaseTwo(state.totalPrice - constants.INGREDIENT_PRICES[action.ingredientName])
+                totalPrice: convertToBaseTwo(state.totalPrice - constants.INGREDIENT_PRICES[action.ingredientName]),
+                building: true
+
             }
         case actionTypes.SET_INGREDIENTS:
             return {
                 ...state,
                 ingredients: action.ingredients,
                 totalPrice: constants.BASE_PRICE,
-                error: false
+                error: false,
+                building: false
             };
         case actionTypes.FETCH_INGREDIENTS_FAIL:
             return {

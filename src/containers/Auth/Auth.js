@@ -14,6 +14,12 @@ class Auth extends Component {
         isSignup: false
     }
 
+    componentDidMount() {
+        if (!this.props.buildingBurger && this.props.authRedirectPath !== '/') {
+            this.props.onSetAuthRedirectPath();
+        }
+    }
+
     onSubmit(email, password) {
         this.props.onAuth(email, password, this.state.isSignup);
     }
