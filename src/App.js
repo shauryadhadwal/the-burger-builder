@@ -37,7 +37,7 @@ class App extends Component {
                         <ProtectedRoute path="/orders" component={Orders} isAuth={this.props.isAuth} />
                         <ProtectedRoute path="/checkout" component={Checkout} isAuth={this.props.isAuth} />
                         <ProtectedRoute path="/logout" component={Logout} isAuth={this.props.isAuth} />
-                        <Redirect from="/" to="/home" />
+                        <Redirect to="/home" />
                     </Switch>
                 </Layout>
             </React.Fragment>

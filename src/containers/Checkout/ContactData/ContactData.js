@@ -25,10 +25,11 @@ class ContactData extends Component {
 		const order = {
 			ingredients: this.props.ingr,
 			price: this.props.price,
-			orderData: values
+			orderData: values,
+			userId: this.props.userId 
 		};
 
-		this.props.onOrderBurger(order);
+		this.props.onOrderBurger(order, this.props.token);
 	}
 
 	render() {
@@ -56,10 +57,8 @@ class ContactData extends Component {
 								value={values.name}
 								onChange={handleChange}
 								onBlur={handleBlur}
-								isValid={touched.name && !errors.name}
 								isInvalid={touched.name && !!errors.name}
 							/>
-							<Form.Control.Feedback >Looks Good!</Form.Control.Feedback>
 							<Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
 						</Form.Group>
 						<Form.Group as={Col} sm="6" htmlFor="email" controlId="email">
@@ -70,10 +69,8 @@ class ContactData extends Component {
 								value={values.email}
 								onChange={handleChange}
 								onBlur={handleBlur}
-								isValid={touched.email && !errors.email}
 								isInvalid={touched.email && !!errors.email}
 							/>
-							<Form.Control.Feedback >Looks Good!</Form.Control.Feedback>
 							<Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
 						</Form.Group>
 					</Form.Row>
@@ -85,10 +82,8 @@ class ContactData extends Component {
 							value={values.street}
 							onChange={handleChange}
 							onBlur={handleBlur}
-							isValid={touched.street && !errors.street}
 							isInvalid={touched.street && !!errors.street}
 						/>
-						<Form.Control.Feedback >Looks Good!</Form.Control.Feedback>
 						<Form.Control.Feedback type="invalid">{errors.street}</Form.Control.Feedback>
 					</Form.Group>
 					<Form.Row>
@@ -100,10 +95,8 @@ class ContactData extends Component {
 								value={values.postalCode}
 								onChange={handleChange}
 								onBlur={handleBlur}
-								isValid={touched.postalCode && !errors.postalCode}
 								isInvalid={touched.postalCode && !!errors.postalCode}
 							/>
-							<Form.Control.Feedback >Looks Good!</Form.Control.Feedback>
 							<Form.Control.Feedback type="invalid">{errors.postalCode}</Form.Control.Feedback>
 						</Form.Group>
 						<Form.Group as={Col} sm="6" htmlFor="delivery" controlId="delivery">
@@ -163,13 +156,15 @@ const mapStateToProps = state => {
 	return {
 		ingr: state.burgerBuilder.ingredients,
 		price: state.burgerBuilder.totalPrice,
-		loading: state.order.loading
+		loading: state.order.loading,
+		token: state.auth.token,
+		userId: state.auth.userId
 	};
 }
 
 const mapDispatchToProps = dispatch => {
 	return {
-		onOrderBurger: (order) => dispatch(actions.purchaseBurger(order))
+		onOrderBurger: (order, token) => dispatch(actions.purchaseBurger(order, token))
 	};
 }
 
