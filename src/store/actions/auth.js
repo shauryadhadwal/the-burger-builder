@@ -8,11 +8,12 @@ export const authStart = () => {
     };
 };
 
-export const authSuccess = (token, userId) => {
+export const authSuccess = (token, userId, email) => {
     return {
         type: actionTypes.AUTH_SUCCESS,
         idToken: token,
-        userId: userId
+        userId: userId,
+        email: email
     };
 };
 
@@ -27,6 +28,7 @@ export const logout = () => {
     localStorage.removeItem('burger_token');
     localStorage.removeItem('burger_expirationDate');
     localStorage.removeItem('burger_userId');
+    localStorage.removeItem('burger_email');
     return {
         type: actionTypes.AUTH_LOGOUT
     };
@@ -58,11 +60,11 @@ export const auth = (email, password, isSignup) => {
                 localStorage.setItem('burger_token', response.data.idToken);
                 localStorage.setItem('burger_expirationDate', expirationDate);
                 localStorage.setItem('burger_userId', response.data.localId);
-                dispatch(authSuccess(response.data.idToken, response.data.localId));
+                localStorage.setItem('burger_email', email);
+                dispatch(authSuccess(response.data.idToken, response.data.localId, email));
                 dispatch(checkAuthTimeout(response.data.expiresIn));
             })
             .catch(err => {
-                console.log(err.response.data)
                 dispatch(authFail(err.response.data.error));
             });
     };
@@ -86,7 +88,8 @@ export const authCheckState = () => {
                 dispatch(logout());
             } else {
                 const userId = localStorage.getItem('burger_userId');
-                dispatch(authSuccess(token, userId));
+                const email = localStorage.getItem('burger_email');
+                dispatch(authSuccess(token, userId, email));
                 dispatch(checkAuthTimeout((expirationDate.getTime() - new Date().getTime()) / 1000));
             }
         }

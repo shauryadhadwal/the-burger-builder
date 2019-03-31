@@ -7,7 +7,7 @@ class Layout extends Component {
     render() {
         return (
             <React.Fragment>
-                <Toolbar isAuthenticated={this.props.isAuthenticated}/>
+                <Toolbar isAuthenticated={this.props.isAuthenticated} email={this.props.email} />
                 <main className={`container-fluid ${classes.Content}`}>
                     {this.props.children}
                 </main>
@@ -17,8 +17,9 @@ class Layout extends Component {
 }
 
 const mapStateToProps = state => {
-    return{
-        isAuthenticated: state.auth.token !== null
+    return {
+        isAuthenticated: state.auth.token !== null,
+        email: state.auth.email
     }
 }
 

@@ -25,6 +25,7 @@ const order = (props) => {
 				<Row>
 					<Col>
 						<p className={classes.PriceBox}>Total Amount: <strong>INR {props.price}</strong></p>
+						<p>{props.address.email}</p>
 					</Col>
 				</Row>
 				<Row>

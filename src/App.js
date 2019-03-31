@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 import Layout from './containers/Layout/Layout';
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
-import Checkout from './containers/Checkout/Checkout';
-import Orders from './containers/Orders/Orders';
 import Auth from './containers/Auth/Auth';
 import About from './containers/About/About';
 import Logout from './containers/Auth/Logout/Logout';
-import { connect } from 'react-redux';
 import * as actions from './store/actions/index';
+import asyncComponent from './hoc/asyncComponent/asyncComponent';
+const asyncCheckout = asyncComponent(() => {
+    return import('./containers/Checkout/Checkout');
+});
+const asyncOrders = asyncComponent(() => {
+    return import('./containers/Orders/Orders');
+});
 
 const ProtectedRoute = (props) => {
     const { path, component } = props;
@@ -34,8 +39,8 @@ class App extends Component {
                         <Route path="/home" component={BurgerBuilder} />
                         <Route path="/auth" component={Auth} />
                         <Route path="/about" component={About} />
-                        <ProtectedRoute path="/orders" component={Orders} isAuth={this.props.isAuth} />
-                        <ProtectedRoute path="/checkout" component={Checkout} isAuth={this.props.isAuth} />
+                        <ProtectedRoute path="/orders" component={asyncOrders} isAuth={this.props.isAuth} />
+                        <ProtectedRoute path="/checkout" component={asyncCheckout} isAuth={this.props.isAuth} />
                         <ProtectedRoute path="/logout" component={Logout} isAuth={this.props.isAuth} />
                         <Redirect to="/home" />
                     </Switch>
