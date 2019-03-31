@@ -4,6 +4,7 @@ import Order from '../../components/Order/Order';
 import axios from '../../axios-orders';
 import withErrorHandler from '../../hoc/WithErrorHandler/WithErrorHandler';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import classes from './Orders.css';
 // TODO: Imrove UI for orders
 
 class Orders extends Component {
@@ -14,8 +15,11 @@ class Orders extends Component {
     }
 
     componentDidMount() {
-        axios.get('/orders.json?auth=' + this.props.token)
+        const queryParams = `?auth=${this.props.token}&orderBy="userId"&equalTo="${this.props.userId}"`;
+
+        axios.get('/orders.json' + queryParams)
             .then(res => {
+                console.log(res.data)
                 let fetchedOrders = [];
                 for (let key in res.data) {
                     fetchedOrders.push({ ...res.data[key], id: key });
@@ -33,7 +37,7 @@ class Orders extends Component {
             this.state.orders.map(order => (
                 <Order key={order.id}
                     ingredients={order.ingredients}
-                    price={order.price} />
+                    price={order.price} address={order.orderData} />
             ))
 
         if (this.state.loading) {
@@ -41,7 +45,9 @@ class Orders extends Component {
         }
         return (
             <Fragment>
-                {orders}
+                <div className={classes.OrderListContainer}>
+                    {orders}
+                </div>
             </Fragment>
         );
     }
