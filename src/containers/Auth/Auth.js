@@ -38,7 +38,6 @@ class Auth extends Component {
                 handleBlur,
                 handleSubmit,
                 handleReset,
-                isValid
             } = props;
 
             return (
@@ -65,7 +64,7 @@ class Auth extends Component {
                         </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group htmlFor="password" controlId="password">
-                        <Form.Label>password</Form.Label>
+                        <Form.Label>Password</Form.Label>
                         <Form.Control
                             placeholder="Enter your Password"
                             type="password"

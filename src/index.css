@@ -15,6 +15,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
     background-color: #e8e2db;
     overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 body::-webkit-scrollbar {

@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Form, Button, Col, Row, ButtonToolbar } from 'react-bootstrap';
+import { Form, Button, Col } from 'react-bootstrap';
 import classes from './ContactData.css';
 import axios from '../../../axios-orders';
 import Spinner from '../../../components/UI/Spinner/Spinner';
@@ -39,12 +39,10 @@ class ContactData extends Component {
 				values,
 				touched,
 				errors,
-				dirty,
 				isSubmitting,
 				handleChange,
 				handleBlur,
 				handleSubmit,
-				handleReset,
 			} = props;
 			return (
 				<Form noValidate onSubmit={handleSubmit}>

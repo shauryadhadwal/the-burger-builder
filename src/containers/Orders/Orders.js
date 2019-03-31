@@ -5,7 +5,6 @@ import axios from '../../axios-orders';
 import withErrorHandler from '../../hoc/WithErrorHandler/WithErrorHandler';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import classes from './Orders.css';
-// TODO: Imrove UI for orders
 
 class Orders extends Component {
 
@@ -19,7 +18,6 @@ class Orders extends Component {
 
         axios.get('/orders.json' + queryParams)
             .then(res => {
-                console.log(res.data)
                 let fetchedOrders = [];
                 for (let key in res.data) {
                     fetchedOrders.push({ ...res.data[key], id: key });

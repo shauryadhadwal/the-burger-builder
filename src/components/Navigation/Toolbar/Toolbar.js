@@ -1,6 +1,7 @@
 import React from 'react';
 import burgerLogo from '../../../assets/images/burger-logo.png'
 import { NavLink } from 'react-router-dom';
+import Badge from 'react-bootstrap/Badge';
 
 const toolbar = (props) => (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -10,6 +11,7 @@ const toolbar = (props) => (
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
         </button>
+
         <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav mr-auto nav-pills">
                 <li className="nav-item">
@@ -27,6 +29,7 @@ const toolbar = (props) => (
             </ul>
             <ul className="navbar-nav nav-pills">
                 <li className="nav-item">
+                    <Badge variant="secondary">{props.email}</Badge>
                     {
                         props.isAuthenticated ? (
                             <NavLink className="px-3" to="/logout">Logout</NavLink>
