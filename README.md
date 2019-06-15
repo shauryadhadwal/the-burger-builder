@@ -1,6 +1,6 @@
 # The Burger Builder Project
 
-A demo project built using React/Redux. In this webapp you can build a custom burger and see prices, order, and view orders. Also, this aplication also supports Authentication.
+A demo project built using React/Redux. In this webapp you can build a custom burger and see prices, order, and view orders. Also, this application also supports Authentication.
 
 ## Available Scripts
 
