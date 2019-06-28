@@ -1,33 +1,28 @@
-import React from 'react';
+import React, { } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-class MainModal extends React.Component {
+const mainModal = (props) => {
 
-    shouldComponentUpdate(nextProps, nextState) {
-        return nextProps.show !== this.props.show
-            || nextProps.children !== this.props.children
+    let successButton = <Button variant="primary" onClick={props.success}>Continue</Button>
+    if (props.success === undefined || props.success === null) {
+        successButton = null;
     }
 
-    render() {
-
-        let successButton = <Button variant="primary" onClick={this.props.success}>Continue</Button>
-        if(this.props.success === undefined || this.props.success === null){
-            successButton = null;
-        }
-
-        return (
-            <React.Fragment>
-                <Modal show={this.props.show} onHide={this.props.closed} centered>
-                    <Modal.Body>{this.props.children}</Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={this.props.closed}>Close</Button>
-                        {successButton}
-                    </Modal.Footer>
-                </Modal>
-            </React.Fragment >
-        )
-    }
+    return (
+        <React.Fragment>
+            <Modal show={props.show} onHide={props.closed} centered>
+                <Modal.Body>{props.children}</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={props.closed}>Close</Button>
+                    {successButton}
+                </Modal.Footer>
+            </Modal>
+        </React.Fragment >
+    )
 }
 
-export default MainModal;
+export default React.memo(mainModal, (prevProps, nextProps) => {
+    return prevProps.show === nextProps.show
+            && prevProps.children === nextProps.children
+});
