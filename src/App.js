@@ -6,25 +6,17 @@ import Layout from './containers/Layout/Layout';
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
 import Logout from './containers/Auth/Logout/Logout';
 import Auth from './containers/Auth/Auth'
-
+import Checkout from './containers/Checkout/Checkout';
+import Orders from './containers/Orders/Orders';
 // Lazy Components
 const About = React.lazy(() => {
     return import('./containers/About/About');
 });
-const Checkout = React.lazy(() => {
-    return import('./containers/Checkout/Checkout');
-});
-const Orders = React.lazy(() => {
-    return import('./containers/Orders/Orders');
-});
 
 const ProtectedRoute = (props) => {
-    const { path, component, render } = props;
+    const { path, component } = props;
+
     if (props.isAuth) {
-        // When lazy components are passed
-        if(render){
-            return <Route path={path} render={() => render} />
-        }
         return <Route path={path} component={component} />
     }
     else {
@@ -42,9 +34,9 @@ const app = (props) => {
         <Switch>
             <Route path="/home" component={BurgerBuilder} />
             <Route path="/auth" component={Auth} />
-            <Route path="/about" render={() => <About />} />
-            <ProtectedRoute path="/orders" render={<Orders />} isAuth={props.isAuth} />
-            <ProtectedRoute path="/checkout" render={<Checkout />} isAuth={props.isAuth} />
+            <Route path="/about" render={(props) => <About {...props}/>} />
+            <ProtectedRoute path="/orders" component={Orders} isAuth={props.isAuth} />
+            <ProtectedRoute path="/checkout" component={Checkout} isAuth={props.isAuth} />
             <ProtectedRoute path="/logout" component={Logout} isAuth={props.isAuth} />
             <Redirect to="/home" />
         </Switch>
