@@ -11,3 +11,11 @@
 .AuthFormCard h4{
     text-align: center;
 }
+
+.OtherErrors{
+    border-radius: 3px;
+    padding: 2px;
+    text-align: center;
+    width: 100%;
+    color: rgb(200, 49, 49);
+}

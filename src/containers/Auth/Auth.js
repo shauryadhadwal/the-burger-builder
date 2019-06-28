@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect, useRef, Fragment } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
 import classes from './Auth.css';
@@ -11,6 +11,8 @@ import * as actions from '../../store/actions/index';
 const auth = (props) => {
 
     const [isSignup, setIsSignup] = useState(false);
+    const [isError, setIsError] = useState(false);
+    const errorDivRef = useRef(null);
 
     useEffect(() => {
         if (!props.buildingBurger && props.authRedirectPath !== '/') {
@@ -18,15 +20,25 @@ const auth = (props) => {
         }
     }, [])
 
+    useEffect(() => {
+        if (props.error) {
+            setIsError(true);
+        }
+    }, [props.error])
+
     const onSubmit = (email, password) => {
         props.onAuth(email, password, isSignup);
+        setIsError(false);
+        props.onAuthClearError();
     }
 
     const switchAuthMethod = () => {
-        setIsSignup(!isSignup)
+        setIsSignup(!isSignup);
+        setIsError(false);
+        props.onAuthClearError();
     }
 
-    const formikComponent = (props) => {
+    const formikComponent = (formikProps) => {
         const {
             values,
             touched,
@@ -35,77 +47,62 @@ const auth = (props) => {
             handleBlur,
             handleSubmit,
             handleReset,
-        } = props;
+        } = formikProps;
+
+        const formErrors = errors;
 
         return (
-            <Form noValidate onSubmit={handleSubmit}>
-                <Form.Group htmlFor="email" controlId="email">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control
-                        placeholder="Enter your email"
-                        type="text"
-                        value={values.email}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        isInvalid={(props.error && props.error.field === 'email') || (touched.email && errors.email)
-                        }
-                    />
-                    <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
-                    <Form.Control.Feedback type="invalid">
-                        {
-                            props.error
-                            && props.error.field === 'email'
-                            && values.email.length === 0
-                            && props.error.message
-                        }
-                    </Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group htmlFor="password" controlId="password">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                        placeholder="Enter your Password"
-                        type="password"
-                        value={values.password}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        isInvalid={(props.error && props.error.field === 'password') || (touched.email && errors.email)
-                        }
-                    />
-                    <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
-                    <Form.Control.Feedback type="invalid">
-                        {
-                            props.error
-                            && props.error.field === 'password'
-                            && values.password.length === 0
-                            && props.error.message
-                        }
-                    </Form.Control.Feedback>
-                </Form.Group>
-                <p className={classes.OtherErrors}>
-                    {props.error
-                        && props.error.field === 'other'
-                        && props.error.message}
-                </p>
-                <Button
-                    variant="primary"
-                    block
-                    type="submit"
-                    onClick={handleSubmit} >
-                    {isSignup ? 'Signup' : 'Login'}
-                </Button>
-                <hr />
-                {
-                    isSignup ? (
-                        <Fragment>
-                            Are you already registered? <span><Button size="sm" variant="warning" onClick={() => { switchAuthMethod(); handleReset() }}>Login</Button></span> instead!
-                    </Fragment>
-                    ) : (
+            <Fragment>
+                <Form noValidate onSubmit={handleSubmit}>
+                    <div ref={errorDivRef} className={classes.OtherErrors} show={isError}>
+                        {props.error && props.error.message}
+                    </div>
+                    <Form.Group htmlFor="email" controlId="email">
+                        <Form.Label>Email</Form.Label>
+                        <Form.Control
+                            placeholder="Enter your email"
+                            type="text"
+                            value={values.email}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            isInvalid={touched.email && formErrors.email}
+                        />
+                        <Form.Control.Feedback type="invalid">{formErrors.email}</Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group htmlFor="password" controlId="password">
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control
+                            placeholder="Enter your Password"
+                            type="password"
+                            value={values.password}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            isInvalid={touched.password && formErrors.password}
+                        />
+                        <Form.Control.Feedback type="invalid">{formErrors.password}</Form.Control.Feedback>
+                    </Form.Group>
+
+                    <Button
+                        variant="primary"
+                        block
+                        type="submit"
+                        onClick={handleSubmit} >
+                        {isSignup ? 'Signup' : 'Login'}
+                    </Button>
+                    <hr />
+                    {
+                        isSignup ? (
                             <Fragment>
-                                Don't have an account ? <span><Button size="sm" variant="warning" onClick={() => { switchAuthMethod(); handleReset() }}>Register</Button></span> here first!
+                                Are you already registered? <span><Button size="sm" variant="warning" onClick={() => { switchAuthMethod(); handleReset() }}>Login</Button></span> instead!
+                    </Fragment>
+                        ) : (
+                                <Fragment>
+                                    Don't have an account ? <span><Button size="sm" variant="warning" onClick={() => { switchAuthMethod(); handleReset() }}>Register</Button></span> here first!
                         </Fragment>
-                        )
-                }
-            </Form>
+                            )
+                    }
+                </Form>
+            </Fragment>
         )
     }
 
@@ -158,7 +155,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onAuth: (email, password, isSignup) => dispatch(actions.auth(email, password, isSignup)),
-        onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath('/'))
+        onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath('/')),
+        onAuthClearError: () => dispatch(actions.authClearError())
     };
 };
 

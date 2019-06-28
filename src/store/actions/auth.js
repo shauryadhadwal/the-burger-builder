@@ -24,6 +24,12 @@ export const authFail = (error) => {
     };
 };
 
+export const authClearError = () => {
+    return {
+        type: actionTypes.AUTH_CLEAR_ERROR,
+    }
+}
+
 export const logout = () => {
     localStorage.removeItem('burger_token');
     localStorage.removeItem('burger_expirationDate');
