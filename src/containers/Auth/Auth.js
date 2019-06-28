@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
 import classes from './Auth.css';
@@ -8,145 +8,141 @@ import * as Yup from 'yup';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
 
-class Auth extends Component {
+const auth = (props) => {
 
-    state = {
-        isSignup: false
+    const [isSignup, setIsSignup] = useState(false);
+
+    useEffect(() => {
+        if (!props.buildingBurger && props.authRedirectPath !== '/') {
+            props.onSetAuthRedirectPath();
+        }
+    }, [])
+
+    const onSubmit = (email, password) => {
+        props.onAuth(email, password, isSignup);
     }
 
-    componentDidMount() {
-        if (!this.props.buildingBurger && this.props.authRedirectPath !== '/') {
-            this.props.onSetAuthRedirectPath();
-        }
+    const switchAuthMethod = () => {
+        setIsSignup(!isSignup)
     }
 
-    onSubmit(email, password) {
-        this.props.onAuth(email, password, this.state.isSignup);
-    }
-
-    switchAuthMethod() {
-        this.setState({ isSignup: !this.state.isSignup });
-    }
-
-    render() {
-        const formikComponent = (props) => {
-            const {
-                values,
-                touched,
-                errors,
-                handleChange,
-                handleBlur,
-                handleSubmit,
-                handleReset,
-            } = props;
-
-            return (
-                <Form noValidate onSubmit={handleSubmit}>
-                    <Form.Group htmlFor="email" controlId="email">
-                        <Form.Label>Email</Form.Label>
-                        <Form.Control
-                            placeholder="Enter your email"
-                            type="text"
-                            value={values.email}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            isInvalid={(this.props.error && this.props.error.field === 'email') || (touched.email && errors.email)
-                            }
-                        />
-                        <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
-                        <Form.Control.Feedback type="invalid">
-                            {
-                                this.props.error
-                                && this.props.error.field === 'email'
-                                && values.email.length === 0
-                                && this.props.error.message
-                            }
-                        </Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group htmlFor="password" controlId="password">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control
-                            placeholder="Enter your Password"
-                            type="password"
-                            value={values.password}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            isInvalid={(this.props.error && this.props.error.field === 'password') || (touched.email && errors.email)
-                            }
-                        />
-                        <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
-                        <Form.Control.Feedback type="invalid">
-                            {
-                                this.props.error
-                                && this.props.error.field === 'password'
-                                && values.password.length === 0
-                                && this.props.error.message
-                            }
-                        </Form.Control.Feedback>
-                    </Form.Group>
-                    <p className={classes.OtherErrors}>
-                        {this.props.error
-                            && this.props.error.field === 'other'
-                            && this.props.error.message}
-                    </p>
-                    <Button
-                        variant="primary"
-                        block
-                        type="submit"
-                        onClick={handleSubmit} >
-                        {this.state.isSignup ? 'Signup' : 'Login'}
-                    </Button>
-                    <hr />
-                    {
-                        this.state.isSignup ? (
-                            <Fragment>
-                                Are you already registered? <span><Button size="sm" variant="warning" onClick={() => { this.switchAuthMethod(); handleReset() }}>Login</Button></span> instead!
-                    </Fragment>
-                        ) : (
-                                <Fragment>
-                                    Don't have an account ? <span><Button size="sm" variant="warning" onClick={() => { this.switchAuthMethod(); handleReset() }}>Register</Button></span> here first!
-                        </Fragment>
-                            )
-                    }
-                </Form>
-            )
-        }
-
-        let form = <div className={classes.ContactFormCard}>
-            <Formik
-                initialValues={{ email: '', password: '' }}
-                onSubmit={(values) => { this.onSubmit(values.email, values.password) }}
-                validationSchema={Yup.object().shape({
-                    email: Yup.string()
-                        .email()
-                        .required("Required"),
-                    password: Yup.string()
-                        .min(6)
-                        .required("Required"),
-                })}
-                component={formikComponent}
-            />
-        </div>
-
-        if (this.props.loading) {
-            form = <Spinner />
-        }
-
-        let authRedirect = null;
-        if (this.props.isAuthenticated) {
-            authRedirect = <Redirect to={this.props.authRedirectPath} />
-        }
+    const formikComponent = (props) => {
+        const {
+            values,
+            touched,
+            errors,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            handleReset,
+        } = props;
 
         return (
-            <Fragment>
-                {authRedirect}
-                <div className={classes.AuthFormCard}>
-                    <h4>{this.state.isSignup ? 'Signup Page' : 'Login Page'}</h4>
-                    {form}
-                </div>
-            </Fragment>
+            <Form noValidate onSubmit={handleSubmit}>
+                <Form.Group htmlFor="email" controlId="email">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control
+                        placeholder="Enter your email"
+                        type="text"
+                        value={values.email}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        isInvalid={(props.error && props.error.field === 'email') || (touched.email && errors.email)
+                        }
+                    />
+                    <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid">
+                        {
+                            props.error
+                            && props.error.field === 'email'
+                            && values.email.length === 0
+                            && props.error.message
+                        }
+                    </Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group htmlFor="password" controlId="password">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control
+                        placeholder="Enter your Password"
+                        type="password"
+                        value={values.password}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        isInvalid={(props.error && props.error.field === 'password') || (touched.email && errors.email)
+                        }
+                    />
+                    <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid">
+                        {
+                            props.error
+                            && props.error.field === 'password'
+                            && values.password.length === 0
+                            && props.error.message
+                        }
+                    </Form.Control.Feedback>
+                </Form.Group>
+                <p className={classes.OtherErrors}>
+                    {props.error
+                        && props.error.field === 'other'
+                        && props.error.message}
+                </p>
+                <Button
+                    variant="primary"
+                    block
+                    type="submit"
+                    onClick={handleSubmit} >
+                    {isSignup ? 'Signup' : 'Login'}
+                </Button>
+                <hr />
+                {
+                    isSignup ? (
+                        <Fragment>
+                            Are you already registered? <span><Button size="sm" variant="warning" onClick={() => { switchAuthMethod(); handleReset() }}>Login</Button></span> instead!
+                    </Fragment>
+                    ) : (
+                            <Fragment>
+                                Don't have an account ? <span><Button size="sm" variant="warning" onClick={() => { switchAuthMethod(); handleReset() }}>Register</Button></span> here first!
+                        </Fragment>
+                        )
+                }
+            </Form>
         )
     }
+
+    let form = <div className={classes.ContactFormCard}>
+        <Formik
+            initialValues={{ email: '', password: '' }}
+            onSubmit={(values) => { onSubmit(values.email, values.password) }}
+            validationSchema={Yup.object().shape({
+                email: Yup.string()
+                    .email()
+                    .required("Required"),
+                password: Yup.string()
+                    .min(6)
+                    .required("Required"),
+            })}
+            component={formikComponent}
+        />
+    </div>
+
+    if (props.loading) {
+        form = <Spinner />
+    }
+
+    let authRedirect = null;
+    if (props.isAuthenticated) {
+        authRedirect = <Redirect to={props.authRedirectPath} />
+    }
+
+    return (
+        <Fragment>
+            {authRedirect}
+            <div className={classes.AuthFormCard}>
+                <h4>{isSignup ? 'Signup Page' : 'Login Page'}</h4>
+                {form}
+            </div>
+        </Fragment>
+    )
 }
 
 const mapStateToProps = state => {
@@ -166,6 +162,6 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Auth);
+export default connect(mapStateToProps, mapDispatchToProps)(auth);
 
 
