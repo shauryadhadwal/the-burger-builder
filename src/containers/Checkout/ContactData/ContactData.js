@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import { Form, Button, Col } from 'react-bootstrap';
 import classes from './ContactData.css';
 import axios from '../../../axios-orders';
@@ -9,145 +9,133 @@ import { connect } from 'react-redux';
 import withErrorHandler from '../../../hoc/WithErrorHandler/WithErrorHandler';
 import * as actions from '../../../store/actions/index';
 
-class ContactData extends Component {
-	state = {
-		name: '',
-		email: '',
-		address: {
-			street: '',
-			postalCode: ''
-		},
-		deliveryType: ''
-	}
+const contactData = (props) => {
 
-	orderHandler = (values) => {
+	const orderHandler = (values) => {
 
 		const order = {
-			ingredients: this.props.ingr,
-			price: this.props.price,
+			ingredients: props.ingr,
+			price: props.price,
 			orderData: values,
-			userId: this.props.userId 
+			userId: props.userId
 		};
 
-		this.props.onOrderBurger(order, this.props.token);
+		props.onOrderBurger(order, props.token);
 	}
 
-	render() {
-
-		const formComponent = (props) => {
-			const {
-				values,
-				touched,
-				errors,
-				isSubmitting,
-				handleChange,
-				handleBlur,
-				handleSubmit,
-			} = props;
-			return (
-				<Form noValidate onSubmit={handleSubmit}>
-					<Form.Row>
-						<Form.Group as={Col} sm="6" htmlFor="name" controlId="name">
-							<Form.Label>Name</Form.Label>
-							<Form.Control
-								placeholder="Enter your name"
-								type="text"
-								value={values.name}
-								onChange={handleChange}
-								onBlur={handleBlur}
-								isInvalid={touched.name && !!errors.name}
-							/>
-							<Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
-						</Form.Group>
-						<Form.Group as={Col} sm="6" htmlFor="email" controlId="email">
-							<Form.Label>Email</Form.Label>
-							<Form.Control
-								placeholder="Enter your email"
-								type="text"
-								value={values.email}
-								onChange={handleChange}
-								onBlur={handleBlur}
-								isInvalid={touched.email && !!errors.email}
-							/>
-							<Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
-						</Form.Group>
-					</Form.Row>
-					<Form.Group htmlFor="street" controlId="street">
-						<Form.Label>Street</Form.Label>
+	const formComponent = (props) => {
+		const {
+			values,
+			touched,
+			errors,
+			isSubmitting,
+			handleChange,
+			handleBlur,
+			handleSubmit,
+		} = props;
+		return (
+			<Form noValidate onSubmit={handleSubmit}>
+				<Form.Row>
+					<Form.Group as={Col} sm="6" htmlFor="name" controlId="name">
+						<Form.Label>Name</Form.Label>
 						<Form.Control
-							placeholder="Enter your Street Address"
+							placeholder="Enter your name"
 							type="text"
-							value={values.street}
+							value={values.name}
 							onChange={handleChange}
 							onBlur={handleBlur}
-							isInvalid={touched.street && !!errors.street}
+							isInvalid={touched.name && !!errors.name}
 						/>
-						<Form.Control.Feedback type="invalid">{errors.street}</Form.Control.Feedback>
+						<Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
 					</Form.Group>
-					<Form.Row>
-						<Form.Group as={Col} sm="6" htmlFor="postalCode" controlId="postalCode">
-							<Form.Label>Postal Code</Form.Label>
-							<Form.Control
-								placeholder="Enter your Postal Code"
-								type="text"
-								value={values.postalCode}
-								onChange={handleChange}
-								onBlur={handleBlur}
-								isInvalid={touched.postalCode && !!errors.postalCode}
-							/>
-							<Form.Control.Feedback type="invalid">{errors.postalCode}</Form.Control.Feedback>
-						</Form.Group>
-						<Form.Group as={Col} sm="6" htmlFor="delivery" controlId="delivery">
-							<Form.Label>Delivery Method</Form.Label>
-							<Form.Control
-								as="select"
-								value={values.delivery}
-								onChange={handleChange}
-								onBlur={handleBlur}
-							>
-								<option>Speedy</option>
-								<option>Regular</option>
-							</Form.Control>
-						</Form.Group>
-					</Form.Row>
-					<Button
-						variant="primary"
-						type="submit"
-						disabled={isSubmitting}>
-						Order
+					<Form.Group as={Col} sm="6" htmlFor="email" controlId="email">
+						<Form.Label>Email</Form.Label>
+						<Form.Control
+							placeholder="Enter your email"
+							type="text"
+							value={values.email}
+							onChange={handleChange}
+							onBlur={handleBlur}
+							isInvalid={touched.email && !!errors.email}
+						/>
+						<Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
+					</Form.Group>
+				</Form.Row>
+				<Form.Group htmlFor="street" controlId="street">
+					<Form.Label>Street</Form.Label>
+					<Form.Control
+						placeholder="Enter your Street Address"
+						type="text"
+						value={values.street}
+						onChange={handleChange}
+						onBlur={handleBlur}
+						isInvalid={touched.street && !!errors.street}
+					/>
+					<Form.Control.Feedback type="invalid">{errors.street}</Form.Control.Feedback>
+				</Form.Group>
+				<Form.Row>
+					<Form.Group as={Col} sm="6" htmlFor="postalCode" controlId="postalCode">
+						<Form.Label>Postal Code</Form.Label>
+						<Form.Control
+							placeholder="Enter your Postal Code"
+							type="text"
+							value={values.postalCode}
+							onChange={handleChange}
+							onBlur={handleBlur}
+							isInvalid={touched.postalCode && !!errors.postalCode}
+						/>
+						<Form.Control.Feedback type="invalid">{errors.postalCode}</Form.Control.Feedback>
+					</Form.Group>
+					<Form.Group as={Col} sm="6" htmlFor="delivery" controlId="delivery">
+						<Form.Label>Delivery Method</Form.Label>
+						<Form.Control
+							as="select"
+							value={values.delivery}
+							onChange={handleChange}
+							onBlur={handleBlur}
+						>
+							<option>Speedy</option>
+							<option>Regular</option>
+						</Form.Control>
+					</Form.Group>
+				</Form.Row>
+				<Button
+					variant="primary"
+					type="submit"
+					disabled={isSubmitting}>
+					Order
 							</Button>
-				</Form>
-			)
-		}
-
-		let form = <div className={classes.ContactFormCard}>
-			<Formik
-				initialValues={{ name: '', email: '', street: '', postalCode: '', delivery: 'Speedy' }}
-				onSubmit={(values) => { this.orderHandler(values) }}
-				validationSchema={Yup.object().shape({
-					name: Yup.string()
-						.required("Required"),
-					email: Yup.string()
-						.email()
-						.required("Required"),
-					street: Yup.string()
-						.required("Required"),
-					postalCode: Yup.string()
-						.required("Required")
-				})}
-				component={formComponent}
-			/>
-		</div>
-
-		if (this.props.loading) {
-			form = <Spinner />
-		}
-		return (
-			<Fragment>
-				{form}
-			</Fragment>
-		);
+			</Form>
+		)
 	}
+
+	let form = <div className={classes.ContactFormCard}>
+		<Formik
+			initialValues={{ name: '', email: '', street: '', postalCode: '', delivery: 'Speedy' }}
+			onSubmit={(values) => { orderHandler(values) }}
+			validationSchema={Yup.object().shape({
+				name: Yup.string()
+					.required("Required"),
+				email: Yup.string()
+					.email()
+					.required("Required"),
+				street: Yup.string()
+					.required("Required"),
+				postalCode: Yup.string()
+					.required("Required")
+			})}
+			component={formComponent}
+		/>
+	</div>
+
+	if (props.loading) {
+		form = <Spinner />
+	}
+	return (
+		<Fragment>
+			{form}
+		</Fragment>
+	);
 }
 
 const mapStateToProps = state => {
@@ -166,4 +154,4 @@ const mapDispatchToProps = dispatch => {
 	};
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ContactData, axios));
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(contactData, axios));
