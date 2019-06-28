@@ -1,19 +1,17 @@
-import React, { Component } from 'react';
+import React from 'react';
 import classes from './Layout.css';
 import Toolbar from '../../components/Navigation/Toolbar/Toolbar'
 import { connect } from 'react-redux';
 
-class Layout extends Component {
-    render() {
+const layout = (props) => {
         return (
             <React.Fragment>
-                <Toolbar isAuthenticated={this.props.isAuthenticated} email={this.props.email} />
+                <Toolbar isAuthenticated={props.isAuthenticated} email={props.email} />
                 <main className={`container-fluid ${classes.Content}`}>
-                    {this.props.children}
+                    {props.children}
                 </main>
             </React.Fragment>
         );
-    }
 }
 
 const mapStateToProps = state => {
@@ -23,4 +21,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(Layout);
+export default connect(mapStateToProps)(layout);
